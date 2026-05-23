@@ -159,6 +159,59 @@
             color: white;
         }
 
+        /* Sub-nav */
+        .nav-sub {
+            margin-left: 12px;
+            margin-bottom: 8px;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease;
+        }
+
+        .nav-sub.open {
+            max-height: 400px;
+        }
+
+        .nav-sub-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px 6px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+            font-size: 13px;
+            color: var(--text-muted);
+            border-left: 2px solid transparent;
+        }
+
+        .nav-sub-item:hover {
+            background: var(--bg-light);
+            color: var(--text-secondary);
+        }
+
+        .nav-sub-item.active {
+            color: var(--primary);
+            border-left-color: var(--primary);
+            background: rgba(99, 102, 241, 0.06);
+        }
+
+        .nav-expand-btn {
+            margin-left: auto;
+            font-size: 10px;
+            opacity: 0.5;
+            transition: transform 0.2s;
+        }
+
+        .nav-item.active .nav-expand-btn {
+            color: white;
+        }
+
+        .nav-expand-btn.rotated {
+            transform: rotate(90deg);
+        }
+
         /* Content */
         .content {
             flex: 1;
@@ -630,25 +683,49 @@
 
             <div class="sidebar-section">
                 <div class="sidebar-title">核心启发点</div>
-                <div class="nav-item active" onclick="scrollToSection('cognitive')">
+
+                <div class="nav-item active" onclick="toggleSubNav(this)" data-section="cognitive">
                     <span class="icon">🧠</span>
                     <span>认知转折</span>
-                    <span class="count">3</span>
+                    <span class="nav-expand-btn">▶</span>
                 </div>
-                <div class="nav-item" onclick="scrollToSection('startup')">
+                <div class="nav-sub open" id="sub-cognitive">
+                    <div class="nav-sub-item active" onclick="scrollToSection('p1')">1 · 顾问</div>
+                    <div class="nav-sub-item" onclick="scrollToSection('p2')">2 · 万事问 AI</div>
+                    <div class="nav-sub-item" onclick="scrollToSection('p3')">3 · 翻转需求</div>
+                </div>
+
+                <div class="nav-item" onclick="toggleSubNav(this)" data-section="startup">
                     <span class="icon">🎯</span>
                     <span>启动方法</span>
-                    <span class="count">3</span>
+                    <span class="nav-expand-btn">▶</span>
                 </div>
-                <div class="nav-item" onclick="scrollToSection('operation')">
+                <div class="nav-sub" id="sub-startup">
+                    <div class="nav-sub-item" onclick="scrollToSection('p4')">4 · 高频优先</div>
+                    <div class="nav-sub-item" onclick="scrollToSection('p5')">5 · 先拆后合</div>
+                    <div class="nav-sub-item" onclick="scrollToSection('p6')">6 · 元提问</div>
+                </div>
+
+                <div class="nav-item" onclick="toggleSubNav(this)" data-section="operation">
                     <span class="icon">⚙️</span>
                     <span>持续运营</span>
-                    <span class="count">4</span>
+                    <span class="nav-expand-btn">▶</span>
                 </div>
-                <div class="nav-item" onclick="scrollToSection('advanced')">
+                <div class="nav-sub" id="sub-operation">
+                    <div class="nav-sub-item" onclick="scrollToSection('p7')">7 · 文件夹定死</div>
+                    <div class="nav-sub-item" onclick="scrollToSection('p8')">8 · MD 格式</div>
+                    <div class="nav-sub-item" onclick="scrollToSection('p9')">9 · 语料喂人味</div>
+                    <div class="nav-sub-item" onclick="scrollToSection('p10')">10 · 网页端</div>
+                </div>
+
+                <div class="nav-item" onclick="toggleSubNav(this)" data-section="advanced">
                     <span class="icon">✨</span>
                     <span>进阶玩法</span>
-                    <span class="count">2</span>
+                    <span class="nav-expand-btn">▶</span>
+                </div>
+                <div class="nav-sub" id="sub-advanced">
+                    <div class="nav-sub-item" onclick="scrollToSection('p11')">11 · 蒸馏人物</div>
+                    <div class="nav-sub-item" onclick="scrollToSection('p12')">12 · 人生仪表盘</div>
                 </div>
             </div>
 
@@ -740,7 +817,7 @@
                 </div>
 
                 <!-- 启发点 1 -->
-                <div class="principle-card">
+                <div class="principle-card" id="p1">
                     <div class="principle-header">
                         <div class="principle-number">1</div>
                         <div class="principle-title">
@@ -818,7 +895,7 @@
                 </div>
 
                 <!-- 启发点 2 -->
-                <div class="principle-card">
+                <div class="principle-card" id="p2">
                     <div class="principle-header">
                         <div class="principle-number">2</div>
                         <div class="principle-title">
@@ -882,7 +959,7 @@
                 </div>
 
                 <!-- 启发点 3 -->
-                <div class="principle-card">
+                <div class="principle-card" id="p3">
                     <div class="principle-header">
                         <div class="principle-number">3</div>
                         <div class="principle-title">
@@ -973,7 +1050,7 @@
                 </div>
 
                 <!-- 启发点 4 -->
-                <div class="principle-card">
+                <div class="principle-card" id="p4">
                     <div class="principle-header">
                         <div class="principle-number">4</div>
                         <div class="principle-title">
@@ -1049,7 +1126,7 @@
                 </div>
 
                 <!-- 启发点 5 -->
-                <div class="principle-card">
+                <div class="principle-card" id="p5">
                     <div class="principle-header">
                         <div class="principle-number">5</div>
                         <div class="principle-title">
@@ -1125,7 +1202,7 @@
                 </div>
 
                 <!-- 启发点 6 -->
-                <div class="principle-card">
+                <div class="principle-card" id="p6">
                     <div class="principle-header">
                         <div class="principle-number">6</div>
                         <div class="principle-title">
@@ -1201,7 +1278,7 @@
                 </div>
 
                 <!-- 启发点 7 -->
-                <div class="principle-card">
+                <div class="principle-card" id="p7">
                     <div class="principle-header">
                         <div class="principle-number">7</div>
                         <div class="principle-title">
@@ -1286,7 +1363,7 @@
                 </div>
 
                 <!-- 启发点 8 -->
-                <div class="principle-card">
+                <div class="principle-card" id="p8">
                     <div class="principle-header">
                         <div class="principle-number">8</div>
                         <div class="principle-title">
@@ -1352,7 +1429,7 @@
                 </div>
 
                 <!-- 启发点 9 -->
-                <div class="principle-card">
+                <div class="principle-card" id="p9">
                     <div class="principle-header">
                         <div class="principle-number">9</div>
                         <div class="principle-title">
@@ -1419,7 +1496,7 @@
                 </div>
 
                 <!-- 启发点 10 -->
-                <div class="principle-card">
+                <div class="principle-card" id="p10">
                     <div class="principle-header">
                         <div class="principle-number">10</div>
                         <div class="principle-title">
@@ -1498,7 +1575,7 @@
                 </div>
 
                 <!-- 启发点 11 -->
-                <div class="principle-card">
+                <div class="principle-card" id="p11">
                     <div class="principle-header">
                         <div class="principle-number">11</div>
                         <div class="principle-title">
@@ -1579,7 +1656,7 @@
                 </div>
 
                 <!-- 启发点 12 -->
-                <div class="principle-card">
+                <div class="principle-card" id="p12">
                     <div class="principle-header">
                         <div class="principle-number">12</div>
                         <div class="principle-title">
@@ -1716,11 +1793,52 @@
                 element.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
 
-            // Update active state
+            // Update nav-item active
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
-            event.currentTarget.classList.add('active');
+
+            // Update sub-nav-item active
+            document.querySelectorAll('.nav-sub-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Find which section this id belongs to
+            const sectionMap = {
+                'p1': 'cognitive', 'p2': 'cognitive', 'p3': 'cognitive',
+                'p4': 'startup', 'p5': 'startup', 'p6': 'startup',
+                'p7': 'operation', 'p8': 'operation', 'p9': 'operation', 'p10': 'operation',
+                'p11': 'advanced', 'p12': 'advanced'
+            };
+
+            const pNum = id.startsWith('p') ? parseInt(id.slice(1)) : null;
+            if (pNum && pNum >= 1 && pNum <= 12) {
+                // Highlight sub-item
+                const subItem = document.querySelector(`.nav-sub-item[onclick*="'${id}'"]`);
+                if (subItem) subItem.classList.add('active');
+                // Highlight parent
+                const section = sectionMap[id];
+                const parentNav = document.querySelector(`.nav-item[data-section="${section}"]`);
+                if (parentNav) parentNav.classList.add('active');
+            } else {
+                // Section-level scroll
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(item => {
+                    if (item.getAttribute('onclick')?.includes(id)) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        function toggleSubNav(element) {
+            const section = element.getAttribute('data-section');
+            const sub = document.getElementById('sub-' + section);
+            const btn = element.querySelector('.nav-expand-btn');
+            if (sub) {
+                sub.classList.toggle('open');
+                if (btn) btn.classList.toggle('rotated');
+            }
         }
 
         function toggleMobileMenu() {
@@ -1728,25 +1846,56 @@
             sidebar.style.display = sidebar.style.display === 'none' ? 'block' : 'none';
         }
 
-        // Intersection Observer for active section
-        const sections = document.querySelectorAll('section[id]');
-        const navItems = document.querySelectorAll('.nav-item');
+        // Intersection Observer for active section + sub-item
+        const sectionSubMap = {
+            'cognitive': ['p1', 'p2', 'p3'],
+            'startup': ['p4', 'p5', 'p6'],
+            'operation': ['p7', 'p8', 'p9', 'p10'],
+            'advanced': ['p11', 'p12']
+        };
+
+        // Observe all section and principle-card elements
+        const observeElements = document.querySelectorAll('section[id], .principle-card[id]');
+        const navItems = document.querySelectorAll('.nav-item[data-section]');
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const id = entry.target.id;
-                    navItems.forEach(item => {
-                        item.classList.remove('active');
+                if (!entry.isIntersecting) return;
+
+                const id = entry.target.id;
+                const isPrinciple = id.startsWith('p');
+
+                if (isPrinciple) {
+                    // Find which section this belongs to
+                    for (const [section, points] of Object.entries(sectionSubMap)) {
+                        if (points.includes(id)) {
+                            // Highlight sub-item
+                            document.querySelectorAll('.nav-sub-item').forEach(si => si.classList.remove('active'));
+                            const subItem = document.querySelector(`.nav-sub-item[onclick*="'${id}'"]`);
+                            if (subItem) subItem.classList.add('active');
+
+                            // Highlight parent nav-item
+                            navItems.forEach(item => item.classList.remove('active'));
+                            const parentNav = document.querySelector(`.nav-item[data-section="${section}"]`);
+                            if (parentNav) parentNav.classList.add('active');
+                            break;
+                        }
+                    }
+                } else {
+                    // Section-level highlight (for darkline, quotes, feedback)
+                    navItems.forEach(item => item.classList.remove('active'));
+                    document.querySelectorAll('.nav-sub-item').forEach(si => si.classList.remove('active'));
+                    // Try to match by onclick attribute
+                    document.querySelectorAll('.nav-item').forEach(item => {
                         if (item.getAttribute('onclick')?.includes(id)) {
                             item.classList.add('active');
                         }
                     });
                 }
             });
-        }, { threshold: 0.3 });
+        }, { threshold: 0.2 });
 
-        sections.forEach(section => observer.observe(section));
+        observeElements.forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
