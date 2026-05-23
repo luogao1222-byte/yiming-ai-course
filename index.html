@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI如何赋能工作与生活 - 12个启发点</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --bg-light: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 24px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .header-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Main Layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0;
+            min-height: calc(100vh - 100px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 24px 0;
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            flex-shrink: 0;
+            border-right: 1px solid var(--border);
+        }
+
+        .sidebar-section {
+            padding: 0 20px;
+            margin-bottom: 24px;
+        }
+
+        .sidebar-title {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .nav-item:hover {
+            background: var(--bg-light);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .nav-item .icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .nav-item .count {
+            margin-left: auto;
+            background: var(--bg-light);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .nav-item.active .count {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            padding: 40px;
+            background: var(--bg-light);
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-header {
+            margin-bottom: 32px;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .section-label.cognitive {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+        }
+
+        .section-label.startup {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #1e40af;
+        }
+
+        .section-label.operation {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+        }
+
+        .section-label.advanced {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            color: #5b21b6;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .section-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Principle Card */
+        .principle-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .principle-card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .principle-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .principle-number {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .principle-title {
+            flex: 1;
+        }
+
+        .principle-title h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .principle-one-liner {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .principle-source {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            padding: 8px 12px;
+            background: var(--bg-light);
+            border-radius: 8px;
+        }
+
+        /* Content Blocks */
+        .content-block {
+            margin-bottom: 24px;
+        }
+
+        .block-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .block-title .icon {
+            width: 24px;
+            height: 24px;
+            background: var(--bg-light);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .block-content {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .block-content p {
+            margin-bottom: 12px;
+        }
+
+        /* Quote */
+        .quote {
+            background: linear-gradient(135deg, #fefce8, #fef9c3);
+            border-left: 4px solid #eab308;
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 16px 0;
+        }
+
+        .quote p {
+            font-style: italic;
+            color: #78350f;
+            margin: 0;
+        }
+
+        .quote-author {
+            font-size: 13px;
+            color: #92400e;
+            margin-top: 8px;
+            font-style: normal;
+        }
+
+        /* Code Block - KEY FIX: white-space: pre-wrap */
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            font-family: 'Noto Sans SC', 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            overflow-x: auto;
+            margin: 16px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .code-block .comment {
+            color: #64748b;
+        }
+
+        /* Action Items */
+        .action-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .action-item.start {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+        }
+
+        .action-item.stop {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+        }
+
+        .action-item.warning {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+        }
+
+        .action-item .icon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        /* Wow Moment */
+        .wow-moment {
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+            border: 2px solid #ec4899;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .wow-moment-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #be185d;
+            margin-bottom: 12px;
+        }
+
+        .wow-moment-content {
+            font-size: 15px;
+            color: #831843;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        /* Checklist */
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .checklist-item .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Table */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            background: var(--bg-light);
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        tr:hover td {
+            background: var(--bg-light);
+        }
+
+        /* Appendix */
+        .appendix {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            margin-top: 40px;
+        }
+
+        .appendix-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+            z-index: 200;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .content {
+                padding: 24px;
+            }
+
+            .header {
+                padding: 16px 24px;
+            }
+
+            .principle-card {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+
+            .principle-title h3 {
+                font-size: 18px;
+            }
+
+            .content {
+                padding: 16px;
+            }
+
+            .principle-card {
+                padding: 20px;
+            }
+
+            .principle-header {
+                flex-direction: column;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .principle-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>AI如何赋能工作与生活</h1>
+            <div class="header-meta">
+                <span>2026-05-23</span>
+                <span>2小时深度对话</span>
+                <span>奕铭 x 沐阳 主讲</span>
+                <span>12个启发点</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">认知暗线</div>
+                <div class="nav-item" onclick="scrollToSection('darkline')">
+                    <span class="icon">💡</span>
+                    <span>三大认知暗线</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">核心启发点</div>
+                <div class="nav-item active" onclick="scrollToSection('cognitive')">
+                    <span class="icon">🧠</span>
+                    <span>认知转折</span>
+                    <span class="count">3</span>
+                </div>
+                <div class="nav-item" onclick="scrollToSection('startup')">
+                    <span class="icon">🎯</span>
+                    <span>启动方法</span>
+                    <span class="count">3</span>
+                </div>
+                <div class="nav-item" onclick="scrollToSection('operation')">
+                    <span class="icon">⚙️</span>
+                    <span>持续运营</span>
+                    <span class="count">4</span>
+                </div>
+                <div class="nav-item" onclick="scrollToSection('advanced')">
+                    <span class="icon">✨</span>
+                    <span>进阶玩法</span>
+                    <span class="count">2</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">附录</div>
+                <div class="nav-item" onclick="scrollToSection('quotes')">
+                    <span class="icon">💬</span>
+                    <span>金句速查</span>
+                </div>
+                <div class="nav-item" onclick="scrollToSection('feedback')">
+                    <span class="icon">📝</span>
+                    <span>共创者回响</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Content -->
+        <main class="content">
+            <!-- Dark Lines Section -->
+            <section class="section" id="darkline">
+                <div class="section-header">
+                    <div class="section-label cognitive">💡 先读这个</div>
+                    <h2 class="section-title">三大认知暗线</h2>
+                    <p class="section-desc">这场共创会最深的洞察不在技术上，而在关系上。</p>
+                </div>
+
+                <div class="principle-card">
+                    <h3 style="margin-bottom: 16px; color: var(--text-primary);">暗线 1：从"用 AI 当工具"到"用 AI 当伙伴"</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>层级</th>
+                                    <th>核心转变</th>
+                                    <th>对应启发点</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>认知层</td><td>"AI 是工具" → "AI 是顾问/导师"</td><td>启发点 1、2、6</td></tr>
+                                <tr><td>启动层</td><td>"学 AI" → "找高频痛点"</td><td>启发点 3、4</td></tr>
+                                <tr><td>操作层</td><td>"大而全" → "先拆分后整合"</td><td>启发点 5</td></tr>
+                                <tr><td>管理层</td><td>"零散" → "文件夹结构 + MD 格式"</td><td>启发点 7、8</td></tr>
+                                <tr><td>内容层</td><td>"AI 味" → "语料喂养出人味"</td><td>启发点 9</td></tr>
+                                <tr><td>人际层</td><td>"替代人" → "蒸馏理解人"</td><td>启发点 11</td></tr>
+                                <tr><td>自我管理层</td><td>"脑中管理" → "可视化仪表盘"</td><td>启发点 12</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="principle-card">
+                    <h3 style="margin-bottom: 16px; color: var(--text-primary);">暗线 2：不同阶段的卡点与解法</h3>
+                    <div class="code-block">入门期
+→ 听不懂、不知道从哪开始
+→ 解法：明确需求 + 万事问 AI（启发点 2、3、6）
+
+成长期
+→ 想全自动但不知道怎么拆
+→ 解法：高频痛点 + 先拆分后整合（启发点 4、5）
+
+进阶期
+→ 怎么让 AI 持续好用不烂尾
+→ 解法：文件夹结构 + Skill 封装 + 语料喂养（启发点 7、8、9）</div>
+                </div>
+
+                <div class="principle-card">
+                    <h3 style="margin-bottom: 16px; color: var(--text-primary);">暗线 3：工具选择的取舍逻辑</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr><th>路线</th><th>工具</th><th>适合谁</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>奕铭路线</td><td>Trae + Obsidian</td><td>不想翻墙、不想付费、重视本地管理</td></tr>
+                                <tr><td>沐阳路线</td><td>Workbody + 飞书</td><td>想要网页端、灵活自定义、喜欢在线化</td></tr>
+                                <tr><td>不推荐新手</td><td>Dify/Coze 画布式</td><td>有门槛，文科生看着头疼</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cognitive Section -->
+            <section class="section" id="cognitive">
+                <div class="section-header">
+                    <div class="section-label cognitive">🧠 第一层</div>
+                    <h2 class="section-title">认知转折</h2>
+                    <p class="section-desc">必须先翻转的 3 个核心信念。如果这三条没想通，后面的工具、技能、工作流都只是加速走弯路。</p>
+                </div>
+
+                <!-- 启发点 1 -->
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-number">1</div>
+                        <div class="principle-title">
+                            <h3>AI 不是工具，是顾问</h3>
+                            <p class="principle-one-liner">把 AI 当一个人——一个非常聪明的、有很多知识的、知道自己能力边界的人——去请教，而不是去命令。</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-source">
+                        <span>来源：奕铭（主讲）+ 沐阳（实践印证）</span>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">❓</span> 问题场景</div>
+                        <div class="block-content">
+                            <p>绝大多数人用 AI 的方式是"输入命令 → 等待结果"，像一个计算器。结果是：问题问得粗糙，产出不符合预期，然后怪 AI 不够智能。</p>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💬</span> 关键对话</div>
+                        <div class="quote">
+                            <p>"不要拿 AI 当工具用，拿 AI 当一个人，一个非常聪明的、有很多知识的人，去请教他、向他学习。"</p>
+                            <div class="quote-author">—— 奕铭</div>
+                        </div>
+                        <div class="quote">
+                            <p>"向 AI 学习，AI 如何帮到我们？这个问题本身是可以问 AI 解决的。"</p>
+                            <div class="quote-author">—— 奕铭</div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💡</span> 解决方案：提问三角法</div>
+                        <div class="block-content">
+                            <p>任何新任务，先问三个问题：</p>
+                            <div class="checklist">
+                                <div class="checklist-item"><span class="checkbox">1</span> 你能做什么、不能做什么？（探能力边界）</div>
+                                <div class="checklist-item"><span class="checkbox">2</span> 最有价值的点是什么？（抓优先级）</div>
+                                <div class="checklist-item"><span class="checkbox">3</span> 风险在哪里？哪些环节肯定不会出错？（控风险）</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">📝</span> 操作模板</div>
+                        <div class="code-block">第一步：开场
+
+"我是一个 [身份/角色]，我想 [目标]。
+请你告诉我：
+
+第二步：问边界
+1. 你能帮我做哪些部分？
+2. 哪些你做不了？
+
+第三步：问价值
+3. 最有价值的切入点是什么？
+
+第四步：问风险
+4. 有什么风险是我需要注意的？"</div>
+                    </div>
+
+                    <div class="wow-moment">
+                        <div class="wow-moment-title">✨ 哇塞时刻</div>
+                        <div class="wow-moment-content">"不要拿 AI 当工具用，拿 AI 当一个人——向 AI 学习，AI 如何帮到我们？这个问题本身是可以问 AI 解决的。"</div>
+                    </div>
+
+                    <div class="content-block" style="margin-top: 24px;">
+                        <div class="block-title"><span class="icon">✅</span> 可迁移行动</div>
+                        <div class="action-items">
+                            <div class="action-item start"><span class="icon">✅</span> <strong>开始做：</strong>每次提问前先问边界，再问价值，最后问风险</div>
+                            <div class="action-item stop"><span class="icon">❌</span> <strong>停止做：</strong>把 AI 当命令执行器，扔一句话就等结果</div>
+                            <div class="action-item warning"><span class="icon">⚠️</span> <strong>边界条件：</strong>需要具体执行时仍需明确指令，"请教"和"执行"是两个阶段</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 启发点 2 -->
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-number">2</div>
+                        <div class="principle-title">
+                            <h3>万事问 AI，万事用 AI</h3>
+                            <p class="principle-one-liner">遇到任何问题，第一个动作不是找人问或自己硬想，而是打开 AI 问——包括"怎么用 AI 解决这个问题"本身。</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-source">
+                        <span>来源：奕铭（主讲）</span>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">❓</span> 问题场景</div>
+                        <div class="block-content">
+                            <p>很多人遇到问题先找人问、先搜资料，不知道"不会提问怎么办"本身也是可以问 AI 的。AI 是一个许愿机，但你得会描述愿望。</p>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💬</span> 关键对话</div>
+                        <div class="quote">
+                            <p>"如果让我讲一节课，你们能记住一个有用的话，那就是——学会万事用 AI 和万事问 AI。AI 不能说是神，但它是一个许愿机，你得会问。"</p>
+                            <div class="quote-author">—— 奕铭</div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💡</span> 解决方案</div>
+                        <div class="block-content">
+                            <p>养成习惯：任何问题，第一步不是找人、不是搜索，而是对 AI 说——</p>
+                            <p>不要直接说"我要做一个 Skill"，而是说：</p>
+                            <div class="quote">
+                                <p>"我要干一个什么活，你觉得这事适不适合做成 Skill？如果适合，怎么拆分？"</p>
+                            </div>
+                            <p>让 AI 先帮你理清你的需求本质。</p>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">📝</span> 操作模板</div>
+                        <div class="code-block">万能开场句：
+
+"我想解决 [问题]，但我不知道怎么描述/怎么开始/怎么拆解。
+请你先帮我理清这个问题本身，然后告诉我你可以怎么帮我。"</div>
+                    </div>
+
+                    <div class="wow-moment">
+                        <div class="wow-moment-title">✨ 哇塞时刻</div>
+                        <div class="wow-moment-content">"学会万事用 AI 和万事问 AI——它不能说是神，但它是一个许愿机，你得会问。"</div>
+                    </div>
+
+                    <div class="content-block" style="margin-top: 24px;">
+                        <div class="block-title"><span class="icon">✅</span> 可迁移行动</div>
+                        <div class="action-items">
+                            <div class="action-item start"><span class="icon">✅</span> <strong>开始做：</strong>遇到问题第一个动作是打开 AI</div>
+                            <div class="action-item stop"><span class="icon">❌</span> <strong>停止做：</strong>遇到问题先找人问、查资料、自己硬想</div>
+                            <div class="action-item warning"><span class="icon">⚠️</span> <strong>边界条件：</strong>AI 建议不一定全对，需要基本判断力；但至少先问 AI 再判断</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 启发点 3 -->
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-number">3</div>
+                        <div class="principle-title">
+                            <h3>从"AI 能做什么"翻转到"我需要什么"</h3>
+                            <p class="principle-one-liner">不是从技术出发找场景，而是从你的高频痛点出发让 AI 来解决。方向反了，永远找不到切入点。</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-source">
+                        <span>来源：沐阳（主讲）+ 莉莉安（印证）</span>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">❓</span> 问题场景</div>
+                        <div class="block-content">
+                            <p>很多人学 AI 是从"AI 有什么功能"开始，然后去找"哪个功能我能用上"——这是一个反向的加法。正确的方式是从自己的痛点出发做减法。</p>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💬</span> 关键对话</div>
+                        <div class="quote">
+                            <p>"越重复、越频繁，这个点我们用 AI 做的价值会越高。我有个肩颈疼痛，就让 AI 给我做了一个坐姿矫正检测器。"</p>
+                            <div class="quote-author">—— 沐阳</div>
+                        </div>
+                        <div class="quote">
+                            <p>"用好 AI 的第一步，还是要明确自己的需求，自己到底想要实现什么样的目的？"</p>
+                            <div class="quote-author">—— 莉莉安（回流时的自我发现）</div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💡</span> 解决方案</div>
+                        <div class="block-content">
+                            <div class="checklist">
+                                <div class="checklist-item"><span class="checkbox">1</span> 列出自己每天/每周最重复的 3 件事（工作或生活都可以）</div>
+                                <div class="checklist-item"><span class="checkbox">2</span> 对每件事打分：重复频率（1-10） x 耗时（分钟） x 痛苦程度（1-10）</div>
+                                <div class="checklist-item"><span class="checkbox">3</span> 得分最高的那个 = 你的第一个 AI 项目</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">📝</span> 操作模板</div>
+                        <div class="code-block">第一步：列出痛点清单
+
+1. 我每天/每周最重复做的 3 件事是什么？
+
+2. 每件事的频繁程度（1-10）
+   耗时（分钟）
+   痛苦程度（1-10）
+
+3. 综合得分最高的那件事
+   = 第一个 AI 项目
+
+第二步：对 AI 说
+
+"我每天都要做 [这件事]
+花费 [X分钟]
+感觉很 [痛苦/繁琐]
+
+你能帮我设计一个解决方案吗？
+我需要你一步步指导我"</div>
+                    </div>
+
+                    <div class="wow-moment">
+                        <div class="wow-moment-title">✨ 哇塞时刻</div>
+                        <div class="wow-moment-content">"不是学 AI 再找场景，而是找到高频痛点再让 AI 来解决。"</div>
+                    </div>
+
+                    <div class="content-block" style="margin-top: 24px;">
+                        <div class="block-title"><span class="icon">✅</span> 可迁移行动</div>
+                        <div class="action-items">
+                            <div class="action-item start"><span class="icon">✅</span> <strong>开始做：</strong>列出自己最高频的 3 个痛点，计算"重复 x 耗时 x 痛苦"得分</div>
+                            <div class="action-item stop"><span class="icon">❌</span> <strong>停止做：</strong>从"AI 能做什么"出发，漫无目的地找场景</div>
+                            <div class="action-item warning"><span class="icon">⚠️</span> <strong>边界条件：</strong>痛点必须是自己真实感受到的，不是"别人说该做"的</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Startup Section -->
+            <section class="section" id="startup">
+                <div class="section-header">
+                    <div class="section-label startup">🎯 第二层</div>
+                    <h2 class="section-title">启动方法</h2>
+                    <p class="section-desc">认知翻转之后，第一次动手就做对的 3 个核心启发。很多人死在"第一次"——要么做得太大无从下手，要么不会描述需求被 AI 拒绝。</p>
+                </div>
+
+                <!-- 启发点 4 -->
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-number">4</div>
+                        <div class="principle-title">
+                            <h3>高频痛点优先封装，低频不值得</h3>
+                            <p class="principle-one-liner">不是所有任务都值得做成 Skill。越重复、越频繁的任务，用 AI 做的价值越高。低频任务直接用大模型对话就够。</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-source">
+                        <span>来源：奕铭（方法论）+ 沐阳（实践案例）</span>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">❓</span> 问题场景</div>
+                        <div class="block-content">
+                            <p>很多人一上来就想把所有东西都自动化成一个大型 agent，结果花了两周做的 Skill，一个月只用了一次。</p>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💬</span> 关键对话</div>
+                        <div class="quote">
+                            <p>"一个技能它的使用场景越高频，我们就先把它的 Skill 做出来。它的目的就是替代提示词——我们不用来回说一堆东西了。"</p>
+                            <div class="quote-author">—— 奕铭</div>
+                        </div>
+                        <div class="quote">
+                            <p>"越重复、越频繁，它其实这个点我们用 AI 做的价值会越高。我就让 AI 给我做了一个坐姿矫正检测器。"</p>
+                            <div class="quote-author">—— 沐阳</div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💡</span> 封装判断标准</div>
+                        <div class="block-content">
+                            <p>满足 ≥ 2 个就值得做成 Skill：</p>
+                            <div class="checklist">
+                                <div class="checklist-item"><span class="checkbox">☐</span> 每周使用 ≥ 3 次</div>
+                                <div class="checklist-item"><span class="checkbox">☐</span> 每次手动操作 ≥ 5 分钟</div>
+                                <div class="checklist-item"><span class="checkbox">☐</span> 有固定的 SOP（你知道怎么做，只是想让 AI 替你执行）</div>
+                                <div class="checklist-item"><span class="checkbox">☐</span> 需要记住特定规则或上下文</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">📝</span> 操作模板</div>
+                        <div class="code-block">判断一个任务是否值得做成 Skill：
+
+1. 这周我做了几次？____次
+
+2. 每次大概花多久？____分钟
+
+3. 我有固定的做法吗？（有/没有）
+
+4. 如果不做 Skill，我能接受每次都手动吗？（能/不能）
+
+如果 ≥ 2 个条件满足 → 值得封装</div>
+                    </div>
+
+                    <div class="wow-moment">
+                        <div class="wow-moment-title">✨ 哇塞时刻</div>
+                        <div class="wow-moment-content">"高频痛点优先封装——每个 Skill 的诞生都应该是为了解决一个你每周都在重复的问题。"</div>
+                    </div>
+
+                    <div class="content-block" style="margin-top: 24px;">
+                        <div class="block-title"><span class="icon">✅</span> 可迁移行动</div>
+                        <div class="action-items">
+                            <div class="action-item start"><span class="icon">✅</span> <strong>开始做：</strong>用封装判断标准审查你的一周，找出 1 个最高频的封成 Skill</div>
+                            <div class="action-item stop"><span class="icon">❌</span> <strong>停止做：</strong>把所有任务无差别地都试图自动化</div>
+                            <div class="action-item warning"><span class="icon">⚠️</span> <strong>边界条件：</strong>低频任务直接用大模型对话就行，不值得投入 Skill 开发成本</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 启发点 5 -->
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-number">5</div>
+                        <div class="principle-title">
+                            <h3>先拆单点跑稳，再考虑整合</h3>
+                            <p class="principle-one-liner">别一上来就做大而全的 agent。每个功能独立做成一个 Skill，跑稳了、不出错了，再考虑怎么串起来。这是奕铭用血泪教训换来的强启发。</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-source">
+                        <span>来源：奕铭（主讲，亲身教训）</span>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">❓</span> 问题场景</div>
+                        <div class="block-content">
+                            <p>新手的典型想法："我要做个 AI 帮我管理整个工作流/电商业务/教学系统。"结果：设计复杂、调试困难、一处出错全崩、根本用不起来。</p>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💬</span> 关键对话</div>
+                        <div class="quote">
+                            <p>"常见误区——我要做个 AI 帮我整个电商业务。结果呢？设计很复杂，调试很困难，一处出错全崩，根本用不起来。这也是我自己经验。"</p>
+                            <div class="quote-author">—— 奕铭</div>
+                        </div>
+                        <div class="quote">
+                            <p>"更务实的方法是先拆分后整合。第一阶段单点 Skill 独立运行，风险隔离，可以快速迭代。"</p>
+                            <div class="quote-author">—— 奕铭</div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💡</span> 三步整合法</div>
+                        <div class="block-content">
+                            <div class="checklist">
+                                <div class="checklist-item"><span class="checkbox">1</span> <strong>单点阶段</strong>：每个 Skill 独立一个对话窗口，独立运行，只做一件事</div>
+                                <div class="checklist-item"><span class="checkbox">2</span> <strong>验证阶段</strong>：每个 Skill 连续 3 次使用不出错 → 标记为"已稳定"</div>
+                                <div class="checklist-item"><span class="checkbox">3</span> <strong>整合阶段</strong>：所有相关 Skill 都稳定后，再考虑用规则链接</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">📝</span> 操作模板</div>
+                        <div class="code-block">第一步：分解
+你的目标 → 拆成 N 个独立的小任务
+
+第二步：逐个封 Skill
+每个任务 → 一个 Skill → 一个对话窗口
+
+第三步：跑稳标准
+□ 连续 3 次使用不出错
+□ 结果满意率 ≥ 80%
+□ 不需要手动修正中间步骤
+
+第四步：整合
+所有 Skill 都跑稳 → 串成一个规则链路</div>
+                    </div>
+
+                    <div class="wow-moment">
+                        <div class="wow-moment-title">✨ 哇塞时刻</div>
+                        <div class="wow-moment-content">"先拆分后整合——每一个功能都跑稳定了，最后再看怎么去整合它比较好。"</div>
+                    </div>
+
+                    <div class="content-block" style="margin-top: 24px;">
+                        <div class="block-title"><span class="icon">✅</span> 可迁移行动</div>
+                        <div class="action-items">
+                            <div class="action-item start"><span class="icon">✅</span> <strong>开始做：</strong>把你的大目标拆成 3-5 个独立小任务，先只做第一个</div>
+                            <div class="action-item stop"><span class="icon">❌</span> <strong>停止做：</strong>一开始就设计大而全的 agent 或工作流</div>
+                            <div class="action-item warning"><span class="icon">⚠️</span> <strong>边界条件：</strong>强启发，几乎没有例外</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 启发点 6 -->
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-number">6</div>
+                        <div class="principle-title">
+                            <h3>让 AI 教你怎么问 AI</h3>
+                            <p class="principle-one-liner">你不需要知道怎么提问。你只需要告诉 AI 你想做什么，然后让它帮你生成提问的话术——这就是"元提问"。</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-source">
+                        <span>来源：沐阳（主讲）</span>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">❓</span> 问题场景</div>
+                        <div class="block-content">
+                            <p>很多人的卡点："AI 听不懂我的需求"，反复修改提示词还是不对。本质问题是：不知道 AI 需要什么样的信息做输入。</p>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💬</span> 关键对话</div>
+                        <div class="quote">
+                            <p>"如果 AI 听不懂你讲话，那你可以让 AI 教你怎么讲话。我会交叉用好几个 AI，让它：我现在想做一个小软件改善坐姿，但不知道怎么清晰描述，你来帮帮我。"</p>
+                            <div class="quote-author">—— 沐阳</div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💡</span> 元提问三步法</div>
+                        <div class="block-content">
+                            <div class="checklist">
+                                <div class="checklist-item"><span class="checkbox">1</span> 对 AI 甲说："我想做 X，但不知道怎么清晰描述，你帮我生成一个提问话术"</div>
+                                <div class="checklist-item"><span class="checkbox">2</span> 把 AI 甲生成的提示词，发给 AI 乙</div>
+                                <div class="checklist-item"><span class="checkbox">3</span> 如果 AI 乙还是没理解 → 把结果给 AI 甲看："它没理解，帮我调整提示词"</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">📝</span> 操作模板</div>
+                        <div class="code-block">当你不知道怎么描述需求时：
+
+"我想做 [目标]，但我不知道怎么清晰地向你描述。
+请你先采访我几个问题，帮我理清需求，然后帮我生成一个提问话术。"
+
+如果 AI 的输出不对：
+"你刚才给我的答案不太对。我想要的是 [纠正描述]。
+请你重新问我几个问题，帮我更准确地表达我的需求。"</div>
+                    </div>
+
+                    <div class="wow-moment">
+                        <div class="wow-moment-title">✨ 哇塞时刻</div>
+                        <div class="wow-moment-content">"不知道怎么说？让 AI 教你说。这就是元提问——问 AI 怎么问 AI。"</div>
+                    </div>
+
+                    <div class="content-block" style="margin-top: 24px;">
+                        <div class="block-title"><span class="icon">✅</span> 可迁移行动</div>
+                        <div class="action-items">
+                            <div class="action-item start"><span class="icon">✅</span> <strong>开始做：</strong>卡住时，直接让 AI 帮你生成提问话术</div>
+                            <div class="action-item stop"><span class="icon">❌</span> <strong>停止做：</strong>因为 AI 听不懂就放弃或反复用同一种方式描述</div>
+                            <div class="action-item warning"><span class="icon">⚠️</span> <strong>边界条件：</strong>需要多轮对话，不适合时间急迫场景；可以交叉使用多个 AI 互相校准</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Operation Section -->
+            <section class="section" id="operation">
+                <div class="section-header">
+                    <div class="section-label operation">⚙️ 第三层</div>
+                    <h2 class="section-title">持续运营</h2>
+                    <p class="section-desc">核心操作链：文件夹结构 → MD 格式 → 语料喂养 → 网页输出。这四个启发点是让 AI 从"一次性试用"到"长期好用"的基础设施。</p>
+                </div>
+
+                <!-- 启发点 7 -->
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-number">7</div>
+                        <div class="principle-title">
+                            <h3>文件夹结构定了就别动</h3>
+                            <p class="principle-one-liner">文件夹结构是 AI 的记忆锚点。所有指令（怎么存档、怎么读取、怎么分类）都绑定了固定路径。一改路径，所有规则全部失效。</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-source">
+                        <span>来源：奕铭（主讲）+ 吕骥Martin（共鸣印证）</span>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">❓</span> 问题场景</div>
+                        <div class="block-content">
+                            <p>很多人用 AI 一开始没有设计文件夹，文件到处乱放。后来想整理时发现：一改文件夹，所有 Skill 和规则的路径引用全部崩溃，需要逐个修改。</p>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💬</span> 关键对话</div>
+                        <div class="quote">
+                            <p>"文件夹结构的稳定性对于管理 AI 有特别特别特别重要的作用。最后你的文件夹一更改，它相应的这些规则就都失效了，都要重新去修改，很麻烦的。"</p>
+                            <div class="quote-author">—— 奕铭</div>
+                        </div>
+                        <div class="quote">
+                            <p>"对，思维是通用的。你让一个人干活，最通用的结构是啥？输入、处理、输出，没了。"</p>
+                            <div class="quote-author">—— 奕铭（回应吕骥）</div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">📁</span> 输入→处理→输出 三层结构</div>
+                        <div class="code-block">根目录（如：文档库）
+├── 00_输入层（外来素材 + 我是谁）
+│   ├── 个人档案（让 AI 了解你）
+│   ├── 学习素材（参考文章、竞品资料）
+│   └── 语料库（你的历史作品）
+│
+├── 01_引擎层（核心规则，不轻易改）
+│   ├── 存档规则
+│   ├── 交互规则（用什么身份、什么语气）
+│   └── Skill 定义（每个 Skill 一个文件）
+│
+└── 02_产出层（AI 的输出按类型分存）
+    ├── 对外表达（文章、课程、方案）
+    ├── 对话记录
+    └── 经验萃取</div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">📝</span> 操作模板</div>
+                        <div class="code-block">第一步：设计你的三层结构
+- 输入层：放什么？分类标准是什么？
+- 引擎层：有哪些规则需要写下来？
+- 产出层：输出分几类？每类存哪个文件夹？
+
+第二步：设计好后，对 AI 说
+"请你记住以下规则：
+- 每次对话前，先读取 [输入层路径] 中关于我的信息
+- 所有规则和 Skill 定义存储在 [引擎层路径]
+- 输出内容按类型分别存储在 [产出层路径]"
+
+第三步：锁结构
+- 初期可边用边调（前 2 周）
+- 稳定后锁定，不轻易改</div>
+                    </div>
+
+                    <div class="wow-moment">
+                        <div class="wow-moment-title">✨ 哇塞时刻</div>
+                        <div class="wow-moment-content">"你让一个人干活，最通用的结构就是输入、处理、输出——文件夹设计参考这个启发就行。"</div>
+                    </div>
+
+                    <div class="content-block" style="margin-top: 24px;">
+                        <div class="block-title"><span class="icon">✅</span> 可迁移行动</div>
+                        <div class="action-items">
+                            <div class="action-item start"><span class="icon">✅</span> <strong>开始做：</strong>用"输入→处理→输出"三层设计你的 AI 工作目录</div>
+                            <div class="action-item stop"><span class="icon">❌</span> <strong>停止做：</strong>随意存放文件，频繁更改目录结构</div>
+                            <div class="action-item warning"><span class="icon">⚠️</span> <strong>边界条件：</strong>初期 2 周可边用边调，稳定后锁定；任何 Skill 的路径引用都基于此结构</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 启发点 8 -->
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-number">8</div>
+                        <div class="principle-title">
+                            <h3>MD 是最稳定的 AI 文档格式</h3>
+                            <p class="principle-one-liner">别让 AI 直接生成 Word 或 PDF。统一用 Markdown（.md）格式——它是所有 AI 的通用语言，读取省 Token、不出错、格式不损失。</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-source">
+                        <span>来源：奕铭（主讲）</span>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">❓</span> 问题场景</div>
+                        <div class="block-content">
+                            <p>很多人习惯让 AI 生成 Word 文档，结果：特别慢、经常出错、完不成任务、很费免费 Token。</p>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💬</span> 关键对话</div>
+                        <div class="quote">
+                            <p>"存成 Word 文档，第一是特别慢，第二是不是很智能，它经常会出错，完不成任务，而且很费 Token。所以我建议生成 MD 文件就可以了。MD 是所有的 AI 通用的一种格式，它读取比较省 Token，也比较容易读取，几乎不会出错。"</p>
+                            <div class="quote-author">—— 奕铭</div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💡</span> 解决方案</div>
+                        <div class="block-content">
+                            <div class="checklist">
+                                <div class="checklist-item"><span class="checkbox">1</span> 所有 AI 输出统一存为 .md 格式</div>
+                                <div class="checklist-item"><span class="checkbox">2</span> 用 Obsidian 或 Trae 打开 MD，格式不损失</div>
+                                <div class="checklist-item"><span class="checkbox">3</span> 需要交付给非技术用户时，再手动转换为 Word/PDF</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">📝</span> 操作模板</div>
+                        <div class="code-block">对 AI 说：
+"每次你输出内容时，直接保存为 .md 文件到 [路径]。
+不要尝试生成 Word 或 PDF 格式。"
+
+如果对方需要 Word 版本：
+手动复制 MD 内容 → 粘贴到 Word → 简单排版即可
+（或者用 Pandoc 等工具批量转换）</div>
+                    </div>
+
+                    <div class="wow-moment">
+                        <div class="wow-moment-title">✨ 哇塞时刻</div>
+                        <div class="wow-moment-content">"MD 是所有的 AI 通用的一种格式，它读取比较省 Token，也几乎不会出错，比较稳定地读取。"</div>
+                    </div>
+
+                    <div class="content-block" style="margin-top: 24px;">
+                        <div class="block-title"><span class="icon">✅</span> 可迁移行动</div>
+                        <div class="action-items">
+                            <div class="action-item start"><span class="icon">✅</span> <strong>开始做：</strong>所有 AI 输出统一存为 .md</div>
+                            <div class="action-item stop"><span class="icon">❌</span> <strong>停止做：</strong>让 AI 直接生成 Word 文档</div>
+                            <div class="action-item warning"><span class="icon">⚠️</span> <strong>边界条件：</strong>需要直接交付给非技术用户时，手动转换一次即可</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 启发点 9 -->
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-number">9</div>
+                        <div class="principle-title">
+                            <h3>语料喂养 = 人味</h3>
+                            <p class="principle-one-liner">AI 写作有"AI 味"的原因不是模型不够好，是你的语料没喂进去。把你的真实作品、经历、说话方式喂给 AI，它就能写出"你"的味道。</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-source">
+                        <span>来源：奕铭（主讲）+ 莉莉安（提问触发）</span>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">❓</span> 问题场景</div>
+                        <div class="block-content">
+                            <p>很多人抱怨 AI 写的东西像套模板、没有灵魂。本质原因是：AI 只知道你的一句话需求，不知道你是谁、你说话什么风格、你的经历是什么。</p>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💬</span> 关键对话</div>
+                        <div class="quote">
+                            <p>"把你的语料的大量素材库喂给它，让它结合你的真实的、真人的真实经历去写，它就有你的味道，而不是有他去瞎改的一些文章的味道了。"</p>
+                            <div class="quote-author">—— 奕铭</div>
+                        </div>
+                        <div class="quote">
+                            <p>"想模仿谁，你把那个人的文章大胆地喂给他，他就可以去模仿那个人的风格。"</p>
+                            <div class="quote-author">—— 奕铭</div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">📝</span> 语料投喂三步法</div>
+                        <div class="code-block">第一步：整理语料
+- 把你写过的最好的 10 篇文章/笔记放进一个文件夹
+- 把你觉得最能代表你风格的朋友圈/短文也放进去
+
+第二步：建规则
+对 AI 说：
+"每次我要求你写作时，请先执行以下步骤：
+1. 读取 [我是谁] 档案
+2. 读取 [语料库] 中相关的参考文章
+3. 分析我的语言风格、思维方式、常用表达
+4. 结合以上分析，产出草稿"
+
+第三步：耐心调教
+初期肯定不满意，有 2-4 周调教过程。
+每次指出具体哪里不对，AI 会逐渐校准。</div>
+                    </div>
+
+                    <div class="wow-moment">
+                        <div class="wow-moment-title">✨ 哇塞时刻</div>
+                        <div class="wow-moment-content">"AI 写作的秘诀不是选最好的模型，而是喂最真实的语料。把你的语料喂给它，它就有你的味道。"</div>
+                    </div>
+
+                    <div class="content-block" style="margin-top: 24px;">
+                        <div class="block-title"><span class="icon">✅</span> 可迁移行动</div>
+                        <div class="action-items">
+                            <div class="action-item start"><span class="icon">✅</span> <strong>开始做：</strong>整理自己最满意的 10 篇文章作为语料库起点</div>
+                            <div class="action-item stop"><span class="icon">❌</span> <strong>停止做：</strong>让 AI 凭空生成内容，不提供任何语料参考</div>
+                            <div class="action-item warning"><span class="icon">⚠️</span> <strong>边界条件：</strong>需要投入时间整理语料；初期 2-4 周产出不稳定，有调教成本</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 启发点 10 -->
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-number">10</div>
+                        <div class="principle-title">
+                            <h3>网页端是 AI 输出最务实的载体</h3>
+                            <p class="principle-one-liner">想让 AI 帮你做工具？首选手让 AI 生成网页端——手机电脑通用，门槛最低，不用学 APP 开发。</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-source">
+                        <span>来源：沐阳（主讲）</span>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">❓</span> 问题场景</div>
+                        <div class="block-content">
+                            <p>很多人想做 AI 工具，上来就想着开发 APP 或小程序——复杂度高、周期长、技术门槛大。其实网页端就够用了。</p>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💬</span> 关键对话</div>
+                        <div class="quote">
+                            <p>"总体上都是用以网页为载体的，因为我想使用频次更高的是在手机上。我通过飞书做了一个入口，把它整合到飞书里，成为看似飞书上的应用功能。"</p>
+                            <div class="quote-author">—— 沐阳</div>
+                        </div>
+                        <div class="quote">
+                            <p>"右上角有一个编辑，输入 GitHub Token 就可以保存并推送。对我来讲就已经足够用了。"</p>
+                            <div class="quote-author">—— 沐阳（回应奕铭问"能编辑吗？"）</div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💡</span> 解决方案</div>
+                        <div class="block-content">
+                            <div class="checklist">
+                                <div class="checklist-item"><span class="checkbox">1</span> 直接对 AI 说"帮我做一个网页版的小工具，功能是 X"</div>
+                                <div class="checklist-item"><span class="checkbox">2</span> 用 Workbody 或 Trae 生成网页端</div>
+                                <div class="checklist-item"><span class="checkbox">3</span> 通过飞书做入口，整合到现有工作流</div>
+                                <div class="checklist-item"><span class="checkbox">4</span> 如需编辑功能，配置 GitHub Token 实现数据云端同步</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">📝</span> 操作模板</div>
+                        <div class="code-block">对 AI 说：
+"我想做一个 [工具功能描述]。
+请以网页形式输出，要求：
+- 手机和电脑都能正常显示
+- 需要一个简单的编辑/更新功能
+- 教我如何部署和访问这个页面"</div>
+                    </div>
+
+                    <div class="wow-moment">
+                        <div class="wow-moment-title">✨ 哇塞时刻</div>
+                        <div class="wow-moment-content">"网页端是 AI 输出的最佳载体——手机电脑通用，门槛最低。"</div>
+                    </div>
+
+                    <div class="content-block" style="margin-top: 24px;">
+                        <div class="block-title"><span class="icon">✅</span> 可迁移行动</div>
+                        <div class="action-items">
+                            <div class="action-item start"><span class="icon">✅</span> <strong>开始做：</strong>首选手让 AI 生成网页端工具</div>
+                            <div class="action-item stop"><span class="icon">❌</span> <strong>停止做：</strong>一开始就追求复杂的 APP 或小程序开发</div>
+                            <div class="action-item warning"><span class="icon">⚠️</span> <strong>边界条件：</strong>网页端功能有限（复杂交互仍需专业开发），但 90% 的个人工具场景足够覆盖</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Advanced Section -->
+            <section class="section" id="advanced">
+                <div class="section-header">
+                    <div class="section-label advanced">✨ 第四层</div>
+                    <h2 class="section-title">进阶玩法</h2>
+                    <p class="section-desc">以下两个启发不太一样——它们不是"怎么让 AI 更好用"，而是"AI 还能用来做什么"。值得一看，但不建议新手一上来就模仿。先走通前 10 条再说。</p>
+                </div>
+
+                <!-- 启发点 11 -->
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-number">11</div>
+                        <div class="principle-title">
+                            <h3>蒸馏人物 = 建立人类样本库</h3>
+                            <p class="principle-one-liner">把重要合作伙伴的语料输入 AI，生成一个能模拟对方思维模式的 Skill——不是为了替代人际关系，而是为了更立体地理解一个人的认知模型。</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-source">
+                        <span>来源：沐阳（主讲）+ 奕铭追问激发</span>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">❓</span> 问题场景</div>
+                        <div class="block-content">
+                            <p>和某些人沟通总是产生误解、反复摩擦，但不知道为什么。如果能有一个"对方的认知模型"帮你做翻译，沟通会高效很多。</p>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💬</span> 关键对话</div>
+                        <div class="quote">
+                            <p>"我把大树的对话蒸馏成了一个同事 Skill，我有问题就会问大树，相当于大树的灵魂在这里。我的人类样本库里面有好多社群成员，都会被我将来的蒸馏成技能。"</p>
+                            <div class="quote-author">—— 沐阳</div>
+                        </div>
+                        <div class="quote">
+                            <p>"这是一个我之前完全没有想到的用法——不是让 AI 扮演它自己，而是让 AI 模拟别人，更了解别人是怎么思考问题的。"</p>
+                            <div class="quote-author">—— 奕铭（反应过来）</div>
+                        </div>
+                        <div class="quote">
+                            <p>"蒸馏更多是帮助我理解这个人想要的是什么，形成一个更清晰的他的愿景、认知、信念的概念化。我去看每个人，他就是更加立体的了，他不会只有优点没有缺点，只有短板没有长板。"</p>
+                            <div class="quote-author">—— 沐阳（深层意图）</div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💡</span> 解决方案</div>
+                        <div class="block-content">
+                            <div class="checklist">
+                                <div class="checklist-item"><span class="checkbox">1</span> 收集对方公开的语料（对话记录、文章、分享、复盘）</div>
+                                <div class="checklist-item"><span class="checkbox">2</span> 输入 AI，让它提炼成一个人的思维模型</div>
+                                <div class="checklist-item"><span class="checkbox">3</span> 封装成 Skill，用于理解对方的表达意图和底层需求</div>
+                                <div class="checklist-item"><span class="checkbox">4</span> <strong>必须征得对方同意</strong>（伦理底线，沐阳反复强调）</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">📝</span> 操作模板</div>
+                        <div class="code-block">第一步：征得同意
+"我想用 AI 做一个工具帮我更理解你的思维方式，
+你愿意吗？我会用你的 [文章/对话/分享] 作为素材。"
+
+第二步：输入语料
+对 AI 说：
+"以下是 [某人] 的 [对话记录/文章/分享]。
+请你提炼他的：思维模式、常用框架、底层信念、沟通风格。
+生成一个角色卡片。"
+
+第三步：封装 Skill
+"以后当我说 '问 [人名]' 时，你以他的思维模式回应，
+帮我理解：他会怎么看这个问题？他的底层需求可能是什么？"</div>
+                    </div>
+
+                    <div class="wow-moment">
+                        <div class="wow-moment-title">✨ 哇塞时刻</div>
+                        <div class="wow-moment-content">"蒸馏一个人不是为了替代他，而是为了更立体地了解他——每个人都是一个立体的生命样本。"</div>
+                    </div>
+
+                    <div class="content-block" style="margin-top: 24px;">
+                        <div class="block-title"><span class="icon">✅</span> 可迁移行动</div>
+                        <div class="action-items">
+                            <div class="action-item start"><span class="icon">✅</span> <strong>开始做：</strong>对一个最想深化理解的合作伙伴，征得同意后尝试蒸馏</div>
+                            <div class="action-item stop"><span class="icon">❌</span> <strong>停止做：</strong>蒸馏后用于欺骗、操纵他人；不征得同意就蒸馏</div>
+                            <div class="action-item warning"><span class="icon">⚠️</span> <strong>边界条件：</strong>必须征得对方同意（伦理底线）；数据隐私需注意；蒸馏精度取决于语料量和质量</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 启发点 12 -->
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-number">12</div>
+                        <div class="principle-title">
+                            <h3>人生仪表盘 = 把个人管理系统可视化</h3>
+                            <p class="principle-one-liner">别人生的数据散落在日记、复盘、To-Do App 里看不见——把 AI 生成的数据做成可视化看板，痛点、风险、行动一目了然。</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-source">
+                        <span>来源：沐阳（主讲）</span>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">❓</span> 问题场景</div>
+                        <div class="block-content">
+                            <p>做了一堆个人管理（目标、复盘、行动项），但数据散落在各个笔记里——不看就不会主动调整。可视化驱动行动：看到红色告警，人才会真正行动。</p>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💬</span> 关键对话</div>
+                        <div class="quote">
+                            <p>"我基于奕铭的 Monica 数据，让 Workbody 给我做了一个操作系统，这样就能够非常直观地看到我当前的痛点是啥，最高风险、中高风险，就是把自己的人生做成了一个仪表盘。"</p>
+                            <div class="quote-author">—— 沐阳</div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">💡</span> 解决方案</div>
+                        <div class="block-content">
+                            <div class="checklist">
+                                <div class="checklist-item"><span class="checkbox">1</span> 把个人管理数据（目标、情绪、行动项、风险评估）从散落笔记中提取</div>
+                                <div class="checklist-item"><span class="checkbox">2</span> 输入 AI，让它帮你设计排版</div>
+                                <div class="checklist-item"><span class="checkbox">3</span> 生成网页端看板，可编辑、可云端同步</div>
+                                <div class="checklist-item"><span class="checkbox">4</span> 目标是：打开看板 → 一眼看到哪里需要调整 → 立刻行动</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="block-title"><span class="icon">📝</span> 操作模板</div>
+                        <div class="code-block">对 AI 说：
+"我有一个 [个人管理系统/复盘数据]，内容包括：
+[目标列表]、[当前行动项]、[风险点]、[关键指标]
+
+请你帮我设计一个网页版仪表盘，要求：
+- 一眼能看到最高优先级的告警
+- 有简单的编辑功能
+- 手机和电脑都能查看
+- 排版清晰、有视觉层级"</div>
+                    </div>
+
+                    <div class="wow-moment">
+                        <div class="wow-moment-title">✨ 哇塞时刻</div>
+                        <div class="wow-moment-content">"人生仪表盘——把自己的人生做成仪表盘：痛点、风险、行动一目了然。"</div>
+                    </div>
+
+                    <div class="content-block" style="margin-top: 24px;">
+                        <div class="block-title"><span class="icon">✅</span> 可迁移行动</div>
+                        <div class="action-items">
+                            <div class="action-item start"><span class="icon">✅</span> <strong>开始做：</strong>把你已经有的复盘数据提取出来，让 AI 生成一个看板</div>
+                            <div class="action-item stop"><span class="icon">❌</span> <strong>停止做：</strong>只在脑子里或散乱笔记中管理人生</div>
+                            <div class="action-item warning"><span class="icon">⚠️</span> <strong>边界条件：</strong>需要定期更新数据，否则看板会失效变得不准确</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Appendix: Quotes -->
+            <section class="appendix" id="quotes">
+                <div class="appendix-title">💬 附录 A：全场金句速查</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th>#</th><th>说话者</th><th>金句</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>奕铭</td><td>"学会万事用 AI 和万事问 AI。AI 是一个许愿机，你得会问。"</td></tr>
+                            <tr><td>2</td><td>奕铭</td><td>"不要拿 AI 当工具用，拿 AI 当一个人。"</td></tr>
+                            <tr><td>3</td><td>奕铭</td><td>"先拆分后整合——每一个功能都跑稳定了，最后再看怎么去整合。"</td></tr>
+                            <tr><td>4</td><td>奕铭</td><td>"文件夹结构的稳定性对于管理 AI 有特别特别特别重要的作用。"</td></tr>
+                            <tr><td>5</td><td>奕铭</td><td>"把你的语料喂给它，它就有你的味道。"</td></tr>
+                            <tr><td>6</td><td>奕铭</td><td>"向 AI 学习，AI 如何帮到我们？这个问题本身是可以问 AI 解决的。"</td></tr>
+                            <tr><td>7</td><td>奕铭</td><td>"你让一个人干活，最通用的结构是啥？输入、处理、输出，没了。"</td></tr>
+                            <tr><td>8</td><td>沐阳</td><td>"越重复、越频繁，用 AI 做的价值越高。"</td></tr>
+                            <tr><td>9</td><td>沐阳</td><td>"让 AI 教你怎么讲话。"</td></tr>
+                            <tr><td>10</td><td>沐阳</td><td>"蒸馏一个人不是为了替代他，而是为了更立体地了解他。"</td></tr>
+                            <tr><td>11</td><td>沐阳</td><td>"不需要懂技术，只需要会问问题——AI 会一步步指导你完成。"</td></tr>
+                            <tr><td>12</td><td>莉莉安</td><td>"用好 AI 的第一步，还是要明确自己的需求。"</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Appendix: Feedback -->
+            <section class="appendix" id="feedback" style="margin-top: 24px;">
+                <div class="appendix-title">📝 附录 B：共创者的回响</div>
+
+                <div class="quote" style="margin-bottom: 16px;">
+                    <p><strong>莉莉安</strong>（入门期，第一次用飞书会议）：</p>
+                    <p>"很多第一次吧。看到奕铭和沐阳的分享，不仅是用在工作中，生活中也有一些解决方案。打开了我的一些思路。我发现，不要把自己局限住——用好 AI 的第一步，还是明确自己的需求。"</p>
+                </div>
+
+                <div class="quote" style="margin-bottom: 16px;">
+                    <p><strong>沐阳</strong>（成长期，主动反思）：</p>
+                    <p>"我发现一个月前我是听不进去的，今天就好很多。也照见了自己——可能沉浸在自己的页面里，已经忘掉了当初是怎么过来的。要做兼容，对于交流很重要。"</p>
+                </div>
+
+                <div class="quote" style="margin-bottom: 16px;">
+                    <p><strong>林林</strong>（入门期，第一次听说 Trae）：</p>
+                    <p>"之前一直用的 DeepSeek 和豆包。今天听你说怎么提问、怎么用文件夹管理，非常有收获。也佩服你两个小时保持饱满的热情。"</p>
+                </div>
+
+                <div class="quote" style="margin-bottom: 16px;">
+                    <p><strong>吕骥Martin</strong>（进阶期，IT 背景）：</p>
+                    <p>"你的思路——用文件夹结构做 AI 管理——其实和本体论/AI 元素开发的思路是通的。思维是通用的。被你们感染了，好好学习。"</p>
+                </div>
+
+                <div class="quote">
+                    <p><strong>奕铭</strong>（主持教练，自我反思）：</p>
+                    <p>"第一次做 AI 结合共创会的主持，开场从教练带偏到讲课了。后半场拽回来了，感谢各位的包容。期待后续共创能激荡出更多好用的灵感和落地方法。"</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+
+    <script>
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            // Update active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+
+        function toggleMobileMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.style.display = sidebar.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Intersection Observer for active section
+        const sections = document.querySelectorAll('section[id]');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    navItems.forEach(item => {
+                        item.classList.remove('active');
+                        if (item.getAttribute('onclick')?.includes(id)) {
+                            item.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>
