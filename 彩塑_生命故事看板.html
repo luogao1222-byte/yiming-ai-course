@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>彩塑生命故事 · Monica 交互式萃取看板</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#faf9f6;--card-bg:#fff;--border:#e8e5df;--text:#2c2c2c;--text-muted:#888;--purple:#7c3aed;--purple-light:#ede9fe;--green:#059669;--green-light:#ecfdf5;--red:#dc2626;--red-light:#fef2f2;--amber:#d97706;--amber-light:#fffbeb;--blue:#2563eb;--blue-light:#eff6ff;--pink:#db2777;--pink-light:#fdf2f8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:24px;max-width:1100px;margin:0 auto}
+.header{text-align:center;margin-bottom:24px}
+.header h1{font-size:22px;font-weight:700;margin-bottom:6px}
+.header p{font-size:12px;color:var(--text-muted)}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.card h2{font-size:16px;font-weight:600;margin-bottom:12px}
+.chart-wrap{position:relative;width:100%;max-height:340px;margin-bottom:8px}
+.chart-wrap canvas{width:100%!important;height:100%!important}
+.chart-legend-inline{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:6px;font-size:11px;color:var(--text-muted)}
+.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.legend-dash{width:16px;height:2px;display:inline-block}
+.click-hint{font-size:11px;color:#9ca3af;text-align:center;margin-bottom:6px;font-style:italic}
+.detail-panel{display:none;background:#fafaf9;border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-top:10px;animation:slideIn .2s ease}
+.detail-panel.active{display:block}
+@keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.detail-panel .dp-title{font-size:14px;font-weight:600;margin-bottom:6px}
+.detail-panel .dp-row{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:4px}
+.detail-panel .dp-item{font-size:12px}
+.detail-panel .dp-label{color:var(--text-muted);font-size:10px}
+.detail-panel .dp-value{font-weight:600;margin-bottom:1px}
+.detail-panel .dp-reason{font-size:12px;color:#555;margin-top:6px;padding-top:6px;border-top:1px dashed var(--border);line-height:1.6}
+.score-badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:11px;font-weight:700}
+.score-red{background:var(--red-light);color:var(--red)}
+.score-amber{background:var(--amber-light);color:var(--amber)}
+.score-green{background:var(--green-light);color:var(--green)}
+.score-purple{background:var(--purple-light);color:var(--purple)}
+.timeline-table{width:100%;border-collapse:collapse;font-size:12px}
+.timeline-table th{background:#f5f4f1;padding:8px 6px;text-align:left;font-weight:600;font-size:11px;color:#666;border-bottom:2px solid var(--border)}
+.timeline-table td{padding:7px 6px;border-bottom:1px solid var(--border);vertical-align:middle}
+.timeline-table tr:hover{background:#fafaf9}
+.event-age{font-weight:700;color:var(--pink);white-space:nowrap}
+.tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600}
+.tag-turn{background:#ffedd5;color:#c2410c}
+.tag-trauma{background:var(--red-light);color:var(--red)}
+.tag-life{background:var(--green-light);color:var(--green)}
+.tag-career{background:#e0e7ff;color:#4338ca}
+.tag-relation{background:var(--purple-light);color:var(--purple)}
+.tag-awakening{background:var(--pink-light);color:var(--pink)}
+.legend-bottom{display:flex;gap:12px;flex-wrap:wrap;padding-top:10px;border-top:1px solid var(--border);font-size:10px;margin-top:10px}
+.legend-bottom .lb-group{display:flex;gap:5px;align-items:center}
+.footer{text-align:center;margin-top:28px;font-size:11px;color:var(--text-muted)}
+.insight-card{background:#f8f7ff;border:1px solid #e0dcf5;border-radius:8px;padding:12px 16px;margin-bottom:8px;font-size:12px}
+.insight-card .insight-title{font-weight:600;color:#6b5ce7;margin-bottom:4px}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>彩塑生命故事 · 交互式萃取看板</h1>
+<p>来源：2026-06-10 生命长河故事会 · 2h42m 转录 · Monica 自动提取</p>
+</div>
+
+<div class="card">
+<h2>📈 两跃轨迹 · 从"应该"到"我要"的算法成熟度</h2>
+<div class="chart-legend-inline">
+<span><span class="legend-dot" style="background:#7c3aed"></span> 第一跃：客观信息→抽象算法（从经历中提炼原则）</span>
+<span><span class="legend-dash" style="background:#10b981;width:22px"></span> 第二跃：抽象算法→实践智慧（原则内化为本能）</span>
+</div>
+<p style="font-size:11px;color:#9ca3af;margin-bottom:6px">横轴=生命阶段，纵轴=成熟度 0-10</p>
+<div class="chart-wrap"><canvas id="chartLeap"></canvas></div>
+<p class="click-hint">👆 点击圆点查看每个阶段的详细证据</p>
+<div id="detailLeap" class="detail-panel"></div>
+</div>
+
+<div class="card">
+<h2>🧠 注意力健康度演变 · 吃夹看框架扫描</h2>
+<div class="chart-legend-inline">
+<span>🟢 8-10 健康专注</span><span>🟡 5-7 部分分散</span><span>🔴 0-4 注意力碎片化</span>
+</div>
+<p style="font-size:11px;color:#9ca3af;margin-bottom:6px">横轴=生命阶段，纵轴=健康度 0-10</p>
+<div class="chart-wrap"><canvas id="chartAttention"></canvas></div>
+<p class="click-hint">👆 点击圆点查看该阶段"吃夹看"详细配置</p>
+<div id="detailAttention" class="detail-panel"></div>
+</div>
+
+<div class="card">
+<h2>🗺️ 关键事件时间线 · 从大染缸到不赶时间</h2>
+<table class="timeline-table"><thead><tr><th>年龄</th><th>事件</th><th>类型</th><th>Monica判定</th></tr></thead>
+<tbody id="timelineBody"></tbody></table>
+<div class="legend-bottom">
+<div class="lb-group"><span class="tag tag-turn">🟠 转折</span>改变方向</div>
+<div class="lb-group"><span class="tag tag-trauma">🔴 创伤</span>负面影响</div>
+<div class="lb-group"><span class="tag tag-life">🟢 觉醒</span>自我发现</div>
+<div class="lb-group"><span class="tag tag-career">💼 职业</span>工作相关</div>
+<div class="lb-group"><span class="tag tag-relation">💜 关系</span>人际影响</div>
+<div class="lb-group"><span class="tag tag-awakening">💗 蜕变</span>关键成长</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔍 人格逆向工程</h2>
+<div class="insight-card"><div class="insight-title">九型人格线索</div>最匹配：<b>2号助人型 → 健康的自我关怀</b>。早年过度付出、活在"应该"里（"我对别人好，是希望别人觉得我还不错"）。觉醒后意识到"你本来就是有期待的"，开始把对自己的关怀放在第一位。这不是变成自私——是2号从"不健康"到"健康"的经典路径。</div>
+<div class="insight-card"><div class="insight-title">荣格功能轴</div><b>Fi（内倾情感）主导</b>——"我就觉得不对"、坚持原则底线、宁可得罪权威也不违背内心。<b>Fe（外倾情感）辅助</b>——对伙伴过度忍让、照顾奶奶到忘记自己。<b>Se（外倾感觉）敏锐</b>——对福建的山、雨、拐弯的风景有极强的感官捕捉力。</div>
+<div class="insight-card"><div class="insight-title">黑色生命力</div>在最低谷时（误诊强直、独自在医院门口大哭）反而生发出巨大力量——"当我意识到我什么都没有的时候，反而能生发出一股巨大的力量"。这是彩塑生命故事最核心的人格信号：<b>打碎→重建→再打碎→再重建</b>的循环，不是脆弱，是韧性。</div>
+<div class="insight-card"><div class="insight-title">叙事主题</div>「从大染缸里捞出自己，然后活成一束光反照回去」——不是逃离世界，是穿越它之后的选择性回归。她的工作室"不赶时间"不是逃避，是「我已经在大染缸里滚过了，现在我来告诉你——还有另一种活法」。</div>
+</div>
+
+<div class="footer">Monica 生命故事结构化萃取 · 案主：彩塑 · 生成于 2026-06-18</div>
+
+<script>
+// ====== DATA ======
+
+const leapStages = ['童年', '大学', '北漂剧组', '关系觉醒', '健康危机', '福建重生', '工作室·教练'];
+const leapAges = [8, 20, 25, 28, 30, 32, 36];
+const leap1Scores = [0, 2, 5, 6, 7, 8, 9];
+const leap2Scores = [0, 0, 2, 2, 3, 6, 8];
+
+const leapDetails = [
+  {
+    stage:'童年 (0-12岁)', age:'8岁', event:'最小女儿·被姐姐保护·跟妈妈买菜',
+    leap1:{score:0,text:'未启动：天真烂漫，没有提炼意识'},
+    leap2:{score:0,text:'未启动'},
+    reason:'家里最小的孩子，唯一一直跟在父母身边长大的。小学被人欺负就哭着找姐姐，姐姐带人把对方吓尿裤子。跟着妈妈买菜，观察妈妈和摊贩聊天——这个场景在30多年后复现：彩塑在福建村里跟修车阿姨、补裤子阿姨聊天，复制了妈妈"扯闲篇→熟络→互助"的模式。但当时只是吸收，没有意识。'
+  },
+  {
+    stage:'大学 (18-22岁)', age:'20岁', event:'艺术院校·取名"彩塑"',
+    leap1:{score:2,text:'萌芽：感受到"大染缸"，但还没提炼出原则'},
+    leap2:{score:0,text:'未启动'},
+    reason:'感受到大学是"小型社会"。自称"啥心眼没有"——这不是自我贬低，是觉察到自己和环境的错位。取名"彩塑"——"把自己扔到社会这个大染缸里的一个人"。这个名字本身就是第一跃的种子：她已经在问"我是谁、我会被染成什么颜色"。但当时只有感受没有答案。'
+  },
+  {
+    stage:'北漂剧组 (22-27岁)', age:'25岁', event:'演员+副导演·名利场的碾压',
+    leap1:{score:5,text:'积累中：大量极端体验，开始形成"什么不对"的判断'},
+    leap2:{score:2,text:'有意识但未内化：坚持原则但不理解为什么自己会双重标准'},
+    reason:'两个矛盾的行为模式同时出现：(1)对权威/领导：原则性问题上"你那是你的事，跟我有什么关系"——直接回绝酒桌要求、反抗不公正；(2)对伙伴/同事：被欺负、被甩活，"隐忍了很久，直到受不了才爆发"。Monica判定：第一跃5分——她已经有"什么不对"的判断，但还没提炼成"为什么我在这两种关系里反应不同"的原则。第二跃2分——有勇气但随机，不是稳定模式。'
+  },
+  {
+    stage:'关系觉醒 (28岁)', age:'28岁', event:'男朋友不知道她爱吃什么',
+    leap1:{score:6,text:'逐步萃取：从"应该"中觉醒'},
+    leap2:{score:2,text:'开始行动但痛苦'},
+    reason:'第一次有人问她"你想干什么"——她发现回答不了。意识到自己一直活在"应该"里：应该对别人好、应该做女朋友的义务、应该照顾所有人。前男友的提问像一面镜子——"我怎么连自己爱吃什么都不知道？"这是第一跃的质变点。但第二跃还很弱——她决定离开但方式剧烈（"人走"），说明这个原则还没变成从容的本能。'
+  },
+  {
+    stage:'健康危机 (30岁)', age:'30岁', event:'误诊强直·独自在医院门口大哭',
+    leap1:{score:7,text:'接近完成：生死面前重新定义优先级'},
+    leap2:{score:3,text:'开始真正自救'},
+    reason:'"我没有人可以靠"——这句话是彩塑人生算法的转折点。误诊虽然是假的，但恐惧是真的。她做了几件和以前不一样的事：去三家医院复查、联系姐姐寻求帮助、开始思考"我为了别人把自己搞垮了，值不值得"。第一跃7分：从"应该为他人"到"必须先为自己"的原则已经形成。第二跃3分：自救行为出现了，但还在"刻意"阶段。'
+  },
+  {
+    stage:'福建重生 (32岁)', age:'32岁', event:'刷短视频发现福建村子·立刻搬家',
+    leap1:{score:8,text:'已完成：从"名利场"到"名利反面"——180度转身不是冲动，是算法驱动'},
+    leap2:{score:6,text:'内化中：用新原则重新生活'},
+    reason:'如果说前面的阶段是"知道什么不对"，这个阶段是"知道什么对"。她去了一个和过去完全相反的地方——山、溪、雨天、不功利的人。不是逃避，是主动选择。5年多过去了——这不是一时冲动，是她用"我要为自己活"这个算法筛出来的环境。第一跃8分。第二跃6分：她在福建的生活本身就是新原则的持续实践——画画、写歌、和村民聊天——不需要刻意想"我要什么"，已经在做了。'
+  },
+  {
+    stage:'工作室·教练 (36岁)', age:'36岁', event:'不赶时间艺术修憩馆 + 生命之音教练',
+    leap1:{score:9,text:'创造性综合：把自己的生命功课变成产品，去帮助别人'},
+    leap2:{score:8,text:'接近实践智慧：不需要"想"，自然在活'},
+    reason:'两跃都在高位。工作室logo是NO里面一个表="没有时间"——她把"不赶时间"做成了一个物理空间、一个产品、一种哲学。她做的教练本质上就是她走过的路：帮别人从"应该"里出来、找到"我要"。这不是学来的方法论——是她自己打了碎、碎了打然后长出来的。Monica给第一跃9分（创造性综合）和第二跃8分（接近本能但还在教练身份里持续验证）。'
+  }
+];
+
+const attnStages = ['童年', '大学', '北漂', '关系觉醒', '健康危机', '福建重生', '工作室'];
+const attnAges = [8, 20, 25, 28, 30, 32, 36];
+const attnScores = [9, 5, 2, 3, 1, 8, 9];
+
+const attnDetails = [
+  {stage:'童年',age:'8岁',health:9,healthText:'🟢 自然专注',eat:{label:'🍚 吃',text:'被爱、被保护、跟妈妈探索世界',score:'9/10'},clip:{label:'🥢 夹',text:'—',score:'—'},watch:{label:'👀 看',text:'—',score:'—'},reason:'最健康的注意力状态——不需要"管理"，注意力自然地流向让她快乐的东西。被姐姐保护、跟妈妈买菜——这些不是"任务"，是活在当下。这是她后来在福建"找回"的状态。'},
+  {stage:'大学',age:'20岁',health:5,healthText:'🟡 开始分散',eat:{label:'🍚 吃',text:'学表演',score:'5/10'},clip:{label:'🥢 夹',text:'观察"小型社会"',score:'4/10'},watch:{label:'👀 看',text:'各种人生方向的焦虑',score:'4/10'},reason:'表演不是不享受——但"大染缸"的觉察让注意力分裂了。一边在做，一边在怀疑"我会被染成什么"。吃夹看三线开始出现。'},
+  {stage:'北漂',age:'25岁',health:2,healthText:'🔴 严重消耗',eat:{label:'🍚 吃',text:'演员+副导演（高强度、被剥削）',score:'2/10'},clip:{label:'🥢 夹',text:'在"应该"里摸爬滚打',score:'2/10'},watch:{label:'👀 看',text:'没有余力看',score:'1/10'},reason:'三线全败。吃的：体力心力双重透支，被骂、被灌酒、被孤立。夹的：试图在"应该"模式里找到出口但越陷越深。看的：连看的精力都没有了。这是注意力健康度的谷底。'},
+  {stage:'关系觉醒',age:'28岁',health:3,healthText:'🔴 崩塌后重建',eat:{label:'🍚 吃',text:'离开不对的关系',score:'5/10'},clip:{label:'🥢 夹',text:'开始找"我要什么"',score:'3/10'},watch:{label:'👀 看',text:'—',score:'—'},reason:'虽然痛，但方向对了。离开男朋友不是放弃——是把"吃"从"为别人活"切换到了空白状态。空白比错的满好。夹的开始发芽：第一次认真问自己"我想要什么"。'},
+  {stage:'健康危机',age:'30岁',health:1,healthText:'🔴 最低谷',eat:{label:'🍚 吃',text:'在医院门口大哭·无人可依靠',score:'1/10'},clip:{label:'🥢 夹',text:'自救行为（查三家医院、联系姐姐）',score:'4/10'},watch:{label:'👀 看',text:'—',score:'—'},reason:'身体和精神同时触底。但夹的"自救"是唯一的亮点——三家医院复查、主动联系姐姐——这些在以前的"应该"模式里是不会做的。谷底里反而长出了新的注意力方向。'},
+  {stage:'福建重生',age:'32岁',health:8,healthText:'🟢 注意力回归',eat:{label:'🍚 吃',text:'画画、写歌、在村子里生活',score:'9/10'},clip:{label:'🥢 夹',text:'学习新技能（教练、音乐制作）',score:'7/10'},watch:{label:'👀 看',text:'—',score:'—'},reason:'接近童年的健康状态。不同的是——童年是"不知道什么是好的"所以自然在好里；现在是"知道了什么是坏的"之后主动选择好。这是更有意识的健康。吃和夹都在喂养她。'},
+  {stage:'工作室',age:'36岁',health:9,healthText:'🟢 滋养型循环',eat:{label:'🍚 吃',text:'教练+音乐+经营工作室',score:'9/10'},clip:{label:'🥢 夹',text:'IP建设、新出路共创',score:'7/10'},watch:{label:'👀 看',text:'持续探索音乐创作',score:'6/10'},reason:'吃夹看形成了滋养型循环——吃的：做教练本身就是自我疗愈的延续；夹的：IP和共创让她把个人经验系统化；看的：音乐创作是精神出口。三条线不再竞争，互相喂养。更关键的是——家人被她的状态吸引过来，姐姐搬来附近，父母来看她后"非常满意地走了"。这不是"我变好了"的证明——这是"我变好了所以关系也变好了"的因果链。'}
+];
+
+const timelineEvents = [
+  {age:'0-12',event:'最小女儿·被姐姐们保护·跟妈妈买菜',type:'基础',tag:'tag-life',label:'安全感+人际模式的源代码'},
+  {age:'7',event:'被同学欺负→姐姐带人把对方吓尿裤子',type:'趣事',tag:'tag-life',label:'"谁都不怕"的底气来源'},
+  {age:'18',event:'艺术院校学表演·感到"小型社会"',type:'环境',tag:'tag-career',label:'大染缸的初次感知'},
+  {age:'19',event:'给自己取名"彩塑"',type:'觉醒',tag:'tag-awakening',label:'"把自己扔到社会大染缸里的人"——自我觉察的起点'},
+  {age:'22-27',event:'北漂·演员+副导演·剧组高强度',type:'职业',tag:'tag-career',label:'体力心力透支·对抗权威但不忍对伙伴说不'},
+  {age:'25',event:'酒桌被要求喝酒→直接拒绝',type:'转折',tag:'tag-turn',label:'原则性问题上不畏权威'},
+  {age:'26',event:'同事甩活→隐忍到爆发',type:'创伤',tag:'tag-trauma',label:'双重标准：不怕权威但困于"应该对朋友好"'},
+  {age:'28',event:'男朋友不知道她爱吃什么→分手',type:'关系',tag:'tag-relation',label:'第一次被问"你想要什么"——答不上来'},
+  {age:'29',event:'开始录播课·梳理过去·主动给孤立过她的同事打电话',type:'觉醒',tag:'tag-awakening',label:'从"应该"中醒来：主动和解但不复合'},
+  {age:'30',event:'误诊强直·独自在医院门口大哭',type:'创伤',tag:'tag-trauma',label:'"我没有人可以靠"——谷底'},
+  {age:'30',event:'自救·三家医院复查·主动联系姐姐',type:'转折',tag:'tag-turn',label:'第一次真正"为自己做点什么"'},
+  {age:'32',event:'刷短视频发现福建村子→立刻搬去',type:'转折',tag:'tag-turn',label:'180度转身：从名利场到山溪雨天'},
+  {age:'33-35',event:'画画·写歌·和自己相处·找回童年',type:'蜕变',tag:'tag-awakening',label:'重建期：把被打碎的自己一片片拼回来'},
+  {age:'35',event:'开工作室·不赶时间艺术修憩馆',type:'事业',tag:'tag-life',label:'把自己的生命功课变成产品和空间'},
+  {age:'36',event:'生命之音教练·新出路共创·IP建设',type:'事业',tag:'tag-life',label:'用自己走过的路帮助别人'},
+  {age:'36',event:'姐姐搬来附近·父母来访后"非常满意"',type:'关系',tag:'tag-relation',label:'我变好了→关系也变好了→家人被吸引过来'},
+];
+
+// ====== CHARTS ======
+const ctxLeap = document.getElementById('chartLeap').getContext('2d');
+new Chart(ctxLeap,{
+  type:'line',
+  data:{
+    labels:leapStages.map((s,i)=>s+'\n'+leapAges[i]+'岁'),
+    datasets:[
+      {label:'第一跃：信息→算法',data:leap1Scores,borderColor:'#7c3aed',backgroundColor:'#7c3aed',borderWidth:2.5,pointRadius:6,pointHoverRadius:9,tension:0.3},
+      {label:'第二跃：算法→智慧',data:leap2Scores,borderColor:'#10b981',backgroundColor:'#10b981',borderWidth:2.5,borderDash:[6,3],pointRadius:6,pointHoverRadius:9,tension:0.3}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{y:{min:0,max:10,ticks:{stepSize:2,callback:v=>v+'/10'},title:{display:true,text:'成熟度'}},x:{title:{display:true,text:'生命阶段 →'}}},
+    onClick:function(e,els){if(els.length>0){const i=els[0].index;const d=leapDetails[i];const g=s=>s>=8?'score-green':s>=5?'score-amber':'score-red';document.getElementById('detailLeap').innerHTML='<div class="dp-title">'+d.stage+' — '+d.event+'</div><div class="dp-row"><div class="dp-item"><div class="dp-label">第一跃</div><div class="dp-value"><span class="score-badge '+g(d.leap1.score)+'">'+d.leap1.score+'/10</span> '+d.leap1.text+'</div></div><div class="dp-item"><div class="dp-label">第二跃</div><div class="dp-value"><span class="score-badge '+g(d.leap2.score)+'">'+d.leap2.score+'/10</span> '+d.leap2.text+'</div></div></div><div class="dp-reason"><strong>Monica判定：</strong>'+d.reason+'</div>';document.getElementById('detailLeap').classList.add('active');document.getElementById('detailLeap').scrollIntoView({behavior:'smooth',block:'nearest'})}}
+  }
+});
+
+const ctxAttn = document.getElementById('chartAttention').getContext('2d');
+new Chart(ctxAttn,{
+  type:'line',
+  data:{
+    labels:attnStages.map((s,i)=>s+'\n'+attnAges[i]+'岁'),
+    datasets:[{
+      data:attnScores,borderColor:'#f59e0b',borderWidth:3,pointRadius:7,pointHoverRadius:10,
+      pointBackgroundColor:ctx=>{const v=ctx.raw;return v>=8?'#10b981':v>=5?'#f59e0b':'#ef4444'},
+      backgroundColor:ctx=>{const v=ctx.raw;return v>=8?'#10b981':v>=5?'#f59e0b':'#ef4444'},
+      tension:0.3
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{y:{min:0,max:10,ticks:{stepSize:2,callback:v=>v+'/10'},title:{display:true,text:'健康度'}},x:{title:{display:true,text:'生命阶段 →'}}},
+    onClick:function(e,els){if(els.length>0){const i=els[0].index;const d=attnDetails[i];document.getElementById('detailAttention').innerHTML='<div class="dp-title">'+d.stage+' — '+d.healthText+' ('+d.health+'/10)</div><div class="dp-row"><div class="dp-item"><div class="dp-label">'+d.eat.label+'</div><div class="dp-value">'+d.eat.score+' — '+d.eat.text+'</div></div><div class="dp-item"><div class="dp-label">'+d.clip.label+'</div><div class="dp-value">'+d.clip.score+' — '+d.clip.text+'</div></div><div class="dp-item"><div class="dp-label">'+d.watch.label+'</div><div class="dp-value">'+d.watch.score+' — '+d.watch.text+'</div></div></div><div class="dp-reason"><strong>Monica判定：</strong>'+d.reason+'</div>';document.getElementById('detailAttention').classList.add('active');document.getElementById('detailAttention').scrollIntoView({behavior:'smooth',block:'nearest'})}}
+  }
+});
+
+// Timeline
+const tbody=document.getElementById('timelineBody');
+timelineEvents.forEach(e=>{
+  const tr=document.createElement('tr');
+  tr.innerHTML='<td class="event-age">'+e.age+'</td><td>'+e.event+'</td><td><span class="tag '+e.tag+'">'+e.type+'</span></td><td style="font-size:11px;color:#666">'+e.label+'</td>';
+  tbody.appendChild(tr);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>彩塑 · 37项核心元能力看板</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#faf9f6;--card-bg:#fff;--border:#e8e5df;--text:#2c2c2c;--text-muted:#888;--purple:#7c3aed;--green:#059669;--amber:#d97706;--coral:#ef4444}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:20px;max-width:1200px;margin:0 auto}
+.header{text-align:center;margin-bottom:20px}
+.header h1{font-size:22px;font-weight:700;margin-bottom:4px}
+.header p{font-size:12px;color:var(--text-muted)}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px}
+.card h2{font-size:16px;font-weight:600;margin-bottom:10px}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+.col{flex:1;min-width:300px}
+.radar-wrap{position:relative;width:100%;max-height:420px}
+.radar-wrap canvas{width:100%!important;height:100%!important}
+.bar-wrap{max-height:380px}
+.bar-wrap canvas{width:100%!important}
+.domain-card{background:#faf9f9;border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.domain-card h3{font-size:13px;font-weight:600;margin-bottom:6px}
+.cap-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:12px;border-bottom:1px dotted #eee}
+.cap-name{flex:1}
+.cap-dots{display:flex;gap:2px;margin:0 8px}
+.dot{width:10px;height:10px;border-radius:2px;background:#e5e5e5}
+.dot.filled.l9{background:#7c3aed}
+.dot.filled.l8{background:#8b5cf6}
+.dot.filled.l7{background:#10b981}
+.dot.filled.l6{background:#34d399}
+.dot.filled.l5{background:#f59e0b}
+.dot.filled.l4{background:#fbbf24}
+.cap-score{font-weight:700;font-size:12px;min-width:28px;text-align:right}
+.summary-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.stat-box{flex:1;min-width:100px;background:#f5f4f1;border-radius:8px;padding:10px 14px;text-align:center}
+.stat-box .stat-num{font-size:24px;font-weight:700}
+.stat-box .stat-label{font-size:10px;color:var(--text-muted)}
+.evidence-toggle{cursor:pointer;color:var(--purple);font-size:11px;margin-left:6px;text-decoration:underline}
+.evidence-panel{display:none;background:#fafaf9;padding:8px 12px;margin-top:4px;border-radius:6px;font-size:11px;color:#555;line-height:1.5}
+.evidence-panel.show{display:block}
+.footer{text-align:center;margin-top:24px;font-size:11px;color:var(--text-muted)}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>彩塑 · 37项核心元能力看板</h1>
+<p>基于 2.5h 生命故事会转录 · 证据链评估 · Monica 自动生成</p>
+</div>
+
+<div class="card">
+<h2>📊 能力概览</h2>
+<div class="summary-row">
+<div class="stat-box"><div class="stat-num" style="color:var(--purple)">9.0</div><div class="stat-label">真实性 (Lv10)</div></div>
+<div class="stat-box"><div class="stat-num" style="color:var(--purple)">9.0</div><div class="stat-label">心力韧性 (Lv9)</div></div>
+<div class="stat-box"><div class="stat-num" style="color:var(--purple)">9.0</div><div class="stat-label">共情力 (Lv9)</div></div>
+<div class="stat-box"><div class="stat-num" style="color:var(--green)">8.0</div><div class="stat-label">表达力 (Lv9)</div></div>
+<div class="stat-box"><div class="stat-num" style="color:var(--green)">8.0</div><div class="stat-label">自驱力 (Lv9)</div></div>
+<div class="stat-box"><div class="stat-num">6.9</div><div class="stat-label">综合平均分</div></div>
+</div>
+<p style="font-size:11px;color:var(--text-muted)">最强领域：内核稳定 8.3 · 创造表达 7.6 · 认知洞见 7.0 · 最弱领域：商业落地 5.8</p>
+</div>
+
+<div class="row">
+<div class="col">
+<div class="card"><h2>🎯 六维雷达图</h2><div class="radar-wrap"><canvas id="radar"></canvas></div></div>
+</div>
+<div class="col">
+<div class="card"><h2>📈 37项能力分布</h2><div class="bar-wrap"><canvas id="barChart"></canvas></div></div>
+</div>
+</div>
+
+<div class="card"><h2>🔍 六域详情</h2>
+<div class="row">
+<div class="col">
+<div class="domain-card"><h3>🧠 认知洞见 · 6.7</h3><div id="caps1"></div></div>
+<div class="domain-card" style="margin-top:10px"><h3>⚡ 决策落地 · 6.7</h3><div id="caps2"></div></div>
+<div class="domain-card" style="margin-top:10px"><h3>💬 人际影响 · 7.2</h3><div id="caps3"></div></div>
+</div>
+<div class="col">
+<div class="domain-card"><h3>🎨 创造表达 · 7.6</h3><div id="caps4"></div></div>
+<div class="domain-card" style="margin-top:10px"><h3>🪨 内核稳定 · 8.3</h3><div id="caps5"></div></div>
+<div class="domain-card" style="margin-top:10px"><h3>💼 商业落地 · 5.8</h3><div id="caps6"></div></div>
+</div>
+</div>
+</div>
+
+<div class="footer">Monica 37项核心元能力评估 · 案主：彩塑 · 置信度：中（基于2.5h转录推断，建议本人验证）</div>
+
+<script>
+// ====== DATA ======
+const domains = [
+  {id:'cog',name:'认知洞见',caps:[
+    {n:'洞见力',s:7,e:'从北漂经历中深刻反思"应该"模式；误诊事件后重新定义人生优先级'},
+    {n:'架构力',s:5,e:'将自己的生命功课结构化为一套教练方法论（尚在完善中）'},
+    {n:'经验脑',s:9,e:'典型的高经验萃取者——整个生命故事都是从经历中提炼算法的过程'},
+    {n:'溯源力',s:7,e:'将成年后的"跟人扯闲篇"模式追溯到童年看妈妈买菜'},
+    {n:'模式识别',s:6,e:'识别出"双重标准"——不怕权威但困于"应该对朋友好"'},
+    {n:'跨界力',s:7,e:'表演→副导演→画画→音乐创作→生命教练——多次跨界'},
+    {n:'辩证力',s:6,e:'能同时持有"大染缸"和"五颜六色也是美"的矛盾视角'}
+  ]},
+  {id:'dec',name:'决策落地',caps:[
+    {n:'决断力',s:9,e:'想明白男朋友不合适→"马上人走"；刷到福建村子→立刻搬去——一旦看清就立刻行动'},
+    {n:'执行力',s:7,e:'建成工作室、录制音乐、参与共创会——想法落地能力强'},
+    {n:'专注力',s:6,e:'能沉浸于创作（画画、写歌），但不追求效率型专注'},
+    {n:'自驱力',s:9,e:'没有任何外部推力下完成人生180度转身——纯内在驱动'},
+    {n:'效率控',s:3,e:'工作室叫"不赶时间"——主动选择不被效率绑架'},
+    {n:'统筹力',s:5,e:'曾任副导演，有基本的统筹经验但不喜欢'},
+    {n:'忍耐力',s:8,e:'在北漂剧组极端环境下坚持多年——但不是盲目忍耐，最终选择了不忍受'}
+  ]},
+  {id:'rel',name:'人际影响',caps:[
+    {n:'共情力',s:9,e:'能感受到奶奶穿不上衣服的痛苦；让璇子"被提醒要为自己着想"'},
+    {n:'连接力',s:7,e:'在福建零人脉的村子建立了工作室和社交圈'},
+    {n:'感染力',s:8,e:'2.5h故事让多人落泪；抽烟都能"结合潇洒和温柔"——沐阳的评价'},
+    {n:'影响力',s:7,e:'家人被她状态吸引——姐姐搬来附近，父母来访后满意离开'},
+    {n:'协调力',s:5,e:'能在多元关系中周旋但非优势'},
+    {n:'边界感',s:6,e:'从"完全没有边界"成长为"有意识建立边界"——还在进化中'}
+  ]},
+  {id:'cre',name:'创造表达',caps:[
+    {n:'内容力',s:8,e:'创作原创歌曲（下雨主题写了两首）；生命故事讲述本身就有很高的内容力'},
+    {n:'审美力',s:8,e:'自主设计工作室logo（NO里面一个表）；璇子做的海报被本人认可'},
+    {n:'表达力',s:9,e:'2.5h无稿讲述，结构自然、情绪流淌、听众深度沉浸——叙事表达极强'},
+    {n:'创新力',s:7,e:'创造"不赶时间"概念——既是物理空间也是生活哲学'},
+    {n:'产品力',s:6,e:'正在将自己的生命经验产品化为教练服务——产品化仍在早期'}
+  ]},
+  {id:'cor',name:'内核稳定',caps:[
+    {n:'心力韧性',s:9,e:'"黑色生命力"——被打碎→重建→再打碎→再重建的循环，不是脆弱是韧性'},
+    {n:'真实性',s:10,e:'整个生命故事就是追求真实的过程；现场抽烟、哭、笑——不掩饰'},
+    {n:'自我认知',s:8,e:'多年自我审视——能坦然说出"我对别人好其实也是希望别人觉得我好"'},
+    {n:'情绪管理',s:7,e:'能自由表达情绪但不被情绪吞噬——哭了能继续讲'},
+    {n:'安全感',s:7,e:'在"无人可依靠"后自己建立安全感——已经内化但偶有波动'},
+    {n:'价值观清晰',s:8,e:'真诚、善良、勇气——这三个词不是标签是行动准则'}
+  ]},
+  {id:'biz',name:'商业落地',caps:[
+    {n:'变现力',s:4,e:'工作室已有但商业模型待明确——目前"让自己快乐"优先于变现'},
+    {n:'运营力',s:5,e:'运营工作室+参与共创会——有基本运营能力'},
+    {n:'用户感知',s:7,e:'经历过目标用户的痛苦——知道"被困在应该里的人"需要什么'},
+    {n:'品牌力',s:7,e:'"小红帽""彩塑""不赶时间"——多个有辨识度的个人品牌符号'},
+    {n:'策略力',s:4,e:'IP和商业策略还在学习阶段'},
+    {n:'合作力',s:8,e:'在新出路共创会中自然协作；璇子/沐阳/奕铭均对其合作能力有正面反馈'}
+  ]}
+];
+
+// Render capability list
+function renderCaps(containerId, caps) {
+  const el = document.getElementById(containerId);
+  caps.forEach((c,i) => {
+    const div = document.createElement('div');
+    div.className = 'cap-row';
+    let dots = '';
+    for(let j=1;j<=10;j++) dots += `<span class="dot${c.s>=j?' filled l'+(j>=9?9:j>=7?7:j>=5?5:4):''}"></span>`;
+    div.innerHTML = `<span class="cap-name">${c.n}<span class="evidence-toggle" onclick="this.nextElementSibling.classList.toggle('show')">证据</span><div class="evidence-panel">${c.e}</div></span><span class="cap-dots">${dots}</span><span class="cap-score" style="color:${c.s>=9?'var(--purple)':c.s>=7?'var(--green)':c.s>=5?'var(--amber)':'var(--coral)'}">${c.s}</span>`;
+    el.appendChild(div);
+  });
+}
+renderCaps('caps1',domains[0].caps);
+renderCaps('caps2',domains[1].caps);
+renderCaps('caps3',domains[2].caps);
+renderCaps('caps4',domains[3].caps);
+renderCaps('caps5',domains[4].caps);
+renderCaps('caps6',domains[5].caps);
+
+// Radar chart
+const dAvg = domains.map(d=>Math.round(d.caps.reduce((a,c)=>a+c.s,0)/d.caps.length*10)/10);
+new Chart(document.getElementById('radar'),{
+  type:'radar',
+  data:{
+    labels:domains.map(d=>d.name+'\n'+dAvg[domains.indexOf(d)]),
+    datasets:[{
+      data:dAvg,backgroundColor:'rgba(124,58,237,0.12)',borderColor:'#7c3aed',borderWidth:2,pointRadius:4,pointBackgroundColor:'#7c3aed'
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{r:{min:0,max:10,ticks:{stepSize:2,backdropColor:'transparent'},pointLabels:{font:{size:11}}}}
+  }
+});
+
+// Bar chart
+const allCaps = domains.flatMap(d=>d.caps);
+new Chart(document.getElementById('barChart'),{
+  type:'bar',
+  data:{
+    labels:allCaps.map(c=>c.n),
+    datasets:[{
+      data:allCaps.map(c=>c.s),
+      backgroundColor:ctx=>{const v=ctx.raw;return v>=9?'#7c3aed':v>=7?'#10b981':v>=5?'#f59e0b':'#ef4444'},
+      borderRadius:4
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    indexAxis:'y',
+    plugins:{legend:{display:false}},
+    scales:{x:{min:0,max:10,ticks:{stepSize:2},grid:{display:false}},y:{ticks:{font:{size:10}}}}
+  }
+});
+</script>
+</body>
+</html>
